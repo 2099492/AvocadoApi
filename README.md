@@ -23,5 +23,3 @@ php artisan serve
 /favorites = your favorite movies stored in own DB
 /movie/{id} = shows movie from https://swapi.dev/api/films/{id} based on id
 ```
-
-# AvocadoApi
