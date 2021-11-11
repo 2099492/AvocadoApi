@@ -24,9 +24,9 @@
         @foreach($favorites as $favorite)
             <div class="flex justify-between p-1">
                 <li class="p-3">
-                    {{ $movies->results[$favorite->movie_id]->title }}
+                    {{ $movies->where('episode_id', '=', $favorite->movie_id)->firstOrFail()->title }}
                     <br>
-                    {{ $movies->results[$favorite->movie_id]->opening_crawl }}
+                    {{ $movies->where('episode_id', '=', $favorite->movie_id)->firstOrFail()->opening_crawl }}
                 </li>
                 <form action="{{ route('movies.destroy', $favorite->id) }}" method="post">
                     @csrf

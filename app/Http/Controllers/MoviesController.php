@@ -16,11 +16,10 @@ class MoviesController extends Controller
             "Accept: application/json",
         );
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $movies = json_decode(curl_exec($curl));
+        $data = json_decode(curl_exec($curl));
+        $movies = collect($data->results);
         curl_close($curl);
-        return view('welcome', [
-            'movies' => $movies
-        ]);
+        return view('welcome', compact('movies'));
     }
 
     public function store() {
@@ -28,9 +27,8 @@ class MoviesController extends Controller
             'movie_id' => 'required',
         ]);
 
-
         Movie::firstOrCreate([
-            'movie_id' => request('movie_id') -1,
+            'movie_id' => request('movie_id'),
             'favorite' => 1
         ]);
 
@@ -47,7 +45,8 @@ class MoviesController extends Controller
             "Accept: application/json",
         );
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $movies = json_decode(curl_exec($curl));
+        $data = json_decode(curl_exec($curl));
+        $movies = collect($data->results);
         curl_close($curl);
         return view('favorites', compact('movies', 'favorites'));
     }

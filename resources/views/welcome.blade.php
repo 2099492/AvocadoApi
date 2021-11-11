@@ -21,10 +21,11 @@
 </a>
 <ul class="list-inside list-decimal shadow-2xl bg-opacity-70 rounded bg-blue-200 m-12 mt-3">
     <div class="divide-y-4 divide-gray-500 divide-solid">
-        @foreach($movies->results as $movie)
+        @foreach($movies as $movie)
         <div class="flex justify-between p-1">
             <li>
                 {{ $movie->title }}
+                {{ $movie->episode_id }}
             </li>
             <form action="{{ route('movies.store') }}" method="post">
                 @csrf
