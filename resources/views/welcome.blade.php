@@ -25,7 +25,6 @@
         <div class="flex justify-between p-1">
             <li>
                 {{ $movie->title }}
-                {{ $movie->episode_id }}
             </li>
             <form action="{{ route('movies.store') }}" method="post">
                 @csrf
