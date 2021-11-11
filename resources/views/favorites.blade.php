@@ -28,7 +28,7 @@
                     <br>
                     {{ $movies->where('episode_id', '=', $favorite->movie_id)->firstOrFail()->opening_crawl }}
                 </li>
-                <form action="{{ route('movies.destroy', $favorite->id) }}" method="post">
+                <form action="{{ route('movies.destroy', $favorite->id) }}" method="post" class="my-auto">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="id" value="{{ $favorite->id }}">

@@ -4,21 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class MoviesController extends Controller
 {
     public function index() {
-        $url = 'https://swapi.dev/api/films/';
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $headers = array(
-            "Accept: application/json",
-        );
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $data = json_decode(curl_exec($curl));
-        $movies = collect($data->results);
-        curl_close($curl);
+        $response = Http::get('https://swapi.dev/api/films/');
+        Cache::add('movies', json_decode($response->body()), now()->addMinutes(60));
+        $movies = Cache::get('movies');
         return view('welcome', compact('movies'));
     }
 
@@ -37,31 +31,14 @@ class MoviesController extends Controller
 
     public function showAll() {
         $favorites = Movie::all();
-        $url = 'https://swapi.dev/api/films/';
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $headers = array(
-            "Accept: application/json",
-        );
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $data = json_decode(curl_exec($curl));
-        $movies = collect($data->results);
-        curl_close($curl);
+        $movies = Cache::get('movies');
+        $movies = collect($movies->results);
         return view('favorites', compact('movies', 'favorites'));
     }
 
     public function show($id) {
-        $url = 'https://swapi.dev/api/films/' . $id;
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $headers = array(
-            "Accept: application/json",
-        );
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $movie = json_decode(curl_exec($curl));
-        curl_close($curl);
+        $response = Http::get('https://swapi.dev/api/films/' . $id);
+        $movie = json_decode($response->body());
         return view('show', compact('movie'));
     }
 

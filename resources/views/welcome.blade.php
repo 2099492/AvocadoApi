@@ -21,17 +21,17 @@
 </a>
 <ul class="list-inside list-decimal shadow-2xl bg-opacity-70 rounded bg-blue-200 m-12 mt-3">
     <div class="divide-y-4 divide-gray-500 divide-solid">
-        @foreach($movies as $movie)
-        <div class="flex justify-between p-1">
-            <li>
-                {{ $movie->title }}
-            </li>
-            <form action="{{ route('movies.store') }}" method="post">
-                @csrf
-                <input type="hidden" name="movie_id" value="{{ $movie->episode_id }}">
-                <x-button>Save as favorite</x-button>
-            </form>
-        </div>
+        @foreach($movies->results as $movie)
+            <div class="flex justify-between p-1">
+                <li>
+                    {{ $movie->title }}
+                </li>
+                <form action="{{ route('movies.store') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="movie_id" value="{{ $movie->episode_id }}">
+                    <x-button>Save as favorite</x-button>
+                </form>
+            </div>
         @endforeach
     </div>
 </ul>
